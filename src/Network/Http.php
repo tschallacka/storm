@@ -8,8 +8,6 @@ use Winter\Storm\Support\Arr;
  *
  * Used as a cURL wrapper for the HTTP protocol.
  *
- * @author Alexey Bobkov, Samuel Georges
- *
  * Usage:
  *
  *   Http::get('https://wintercms.com');
@@ -18,6 +16,7 @@ use Winter\Storm\Support\Arr;
  *   Http::patch('...');
  *   Http::put('...');
  *   Http::options('...');
+ *   Http::head('...');
  *
  *   $result = Http::post('https://wintercms.com');
  *   echo $result;                          // Outputs: <html><head><title>...
@@ -56,6 +55,8 @@ use Winter\Storm\Support\Arr;
  *
  *   });
  *
+ * @author Alexey Bobkov, Samuel Georges
+ * @author Winter CMS
  */
 
 class Http
@@ -66,6 +67,7 @@ class Http
     const METHOD_PATCH = 'PATCH';
     const METHOD_PUT = 'PUT';
     const METHOD_OPTIONS = 'OPTIONS';
+    const METHOD_HEAD = 'HEAD';
 
     /**
      * @var string The HTTP address to use.
@@ -96,6 +98,11 @@ class Http
      * @var array The last returned HTTP code.
      */
     public $code;
+
+    /**
+     * @var bool The last response was successful (ie. the HTTP code was 2xx)
+     */
+    public $ok;
 
     /**
      * @var array The cURL response information.
@@ -234,6 +241,18 @@ class Http
     }
 
     /**
+     * Make a HTTP HEAD call.
+     * @param string $url
+     * @param callable $options
+     * @return self
+     */
+    public static function head($url, $options = null)
+    {
+        $http = self::make($url, self::METHOD_HEAD, $options);
+        return $http->send();
+    }
+
+    /**
      * Execute the HTTP request.
      * @return string response body
      */
@@ -320,7 +339,8 @@ class Http
         }
 
         $this->info = curl_getinfo($curl);
-        $this->code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $this->code = (int) curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $this->ok = ($this->code >= 200 && $this->code <= 299);
 
         /*
          * Close resources

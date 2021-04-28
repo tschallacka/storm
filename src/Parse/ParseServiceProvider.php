@@ -1,9 +1,9 @@
 <?php namespace Winter\Storm\Parse;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Contracts\Support\DeferrableProvider;
+use Winter\Storm\Parse\Processor\Symfony3Processor;
 
-class ParseServiceProvider extends ServiceProvider implements DeferrableProvider
+class ParseServiceProvider extends ServiceProvider
 {
     /**
      * The container singletons that should be registered.
@@ -12,10 +12,23 @@ class ParseServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public $singletons = [
         'parse.markdown' => Markdown::class,
-        'parse.yaml' => Yaml::class,
         'parse.twig' => Twig::class,
         'parse.ini' => Ini::class,
     ];
+
+    /**
+     * Register the service provider.
+     * @return void
+     */
+    public function register()
+    {
+        $this->app->singleton('parse.yaml', function ($app) {
+            $yaml = new Yaml();
+            $yaml->setProcessor(new Symfony3Processor);
+
+            return $yaml;
+        });
+    }
 
     /**
      * Get the services provided by the provider.

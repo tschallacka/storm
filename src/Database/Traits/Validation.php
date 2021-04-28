@@ -449,6 +449,10 @@ trait Validation
         $table = 'unique:' . $this->getConnectionName()  . '.' . $this->getTable();
         $column = $column ?: $fieldName;
         $key = $keyName ? $this->$keyName : $this->getKey();
+        if (is_null($key)) {
+            $key = 'NULL';
+        }
+
         $keyName = $keyName ?: $this->getKeyName();
 
         $params = [$table, $column, $key, $keyName];

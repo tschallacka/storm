@@ -1,7 +1,6 @@
 <?php namespace Winter\Storm\Foundation\Exception;
 
 use Log;
-use Event;
 use Closure;
 use Response;
 use Exception;
@@ -39,10 +38,10 @@ class Handler extends ExceptionHandler
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return void
      */
-    public function report(Exception $exception)
+    public function report(\Throwable $exception)
     {
         /**
          * @event exception.beforeReport
@@ -56,7 +55,7 @@ class Handler extends ExceptionHandler
          *         }
          *     });
          */
-        if (Event::fire('exception.beforeReport', [$exception], true) === false) {
+        if (app()->make('events')->fire('exception.beforeReport', [$exception], true) === false) {
             return;
         }
 
@@ -78,22 +77,18 @@ class Handler extends ExceptionHandler
          *         app('sentry')->captureException($exception);
          *     });
          */
-        Event::fire('exception.report', [$exception]);
+        app()->make('events')->fire('exception.report', [$exception]);
     }
 
     /**
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
+    public function render($request, Throwable $exception)
     {
-        if (!class_exists('Event')) {
-            return parent::render($request, $exception);
-        }
-
         $statusCode = $this->getStatusCode($exception);
         $response = $this->callCustomHandlers($exception);
 
@@ -105,7 +100,7 @@ class Handler extends ExceptionHandler
             return Response::make($response, $statusCode);
         }
 
-        if ($event = Event::fire('exception.beforeRender', [$exception, $statusCode, $request], true)) {
+        if ($event = app()->make('events')->fire('exception.beforeRender', [$exception, $statusCode, $request], true)) {
             return Response::make($event, $statusCode);
         }
 
