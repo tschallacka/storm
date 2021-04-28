@@ -4,6 +4,7 @@ use Winter\Storm\Filesystem\PathResolver;
 use Winter\Storm\Support\Arr;
 use Winter\Storm\Support\Str;
 use Winter\Storm\Support\Collection;
+use Winter\Storm\Support\Helper;
 
 if (!function_exists('input')) {
     /**
@@ -21,18 +22,7 @@ if (!function_exists('input')) {
      */
     function input($name = null, $default = null)
     {
-        if ($name === null) {
-            return Input::all();
-        }
-
-        /*
-         * Array field name, eg: field[key][key2][key3]
-         */
-        if (class_exists('Winter\Storm\Html\Helper')) {
-            $name = implode('.', Winter\Storm\Html\Helper::nameToArray($name));
-        }
-
-        return Input::get($name, $default);
+        return Helper::input($name, $default);
     }
 }
 
@@ -42,18 +32,7 @@ if (!function_exists('post')) {
      */
     function post($name = null, $default = null)
     {
-        if ($name === null) {
-            return Request::post();
-        }
-
-        /*
-         * Array field name, eg: field[key][key2][key3]
-         */
-        if (class_exists('Winter\Storm\Html\Helper')) {
-            $name = implode('.', Winter\Storm\Html\Helper::nameToArray($name));
-        }
-
-        return array_get(Request::post(), $name, $default);
+        return Helper::post($name, $default);
     }
 }
 
@@ -63,18 +42,7 @@ if (!function_exists('get')) {
      */
     function get($name = null, $default = null)
     {
-        if ($name === null) {
-            return Request::query();
-        }
-
-        /*
-         * Array field name, eg: field[key][key2][key3]
-         */
-        if (class_exists('Winter\Storm\Html\Helper')) {
-            $name = implode('.', Winter\Storm\Html\Helper::nameToArray($name));
-        }
-
-        return array_get(Request::query(), $name, $default);
+        return Helper::get($name, $default);
     }
 }
 
@@ -87,20 +55,7 @@ if (!function_exists('trace_log')) {
      */
     function trace_log()
     {
-        $messages = func_get_args();
-
-        foreach ($messages as $message) {
-            $level = 'info';
-
-            if ($message instanceof Exception) {
-                $level = 'error';
-            }
-            elseif (is_array($message) || is_object($message)) {
-                $message = print_r($message, true);
-            }
-
-            Log::$level($message);
-        }
+        call_user_func_array([Helper::class, 'traceLog'], func_get_args());
     }
 }
 
@@ -111,7 +66,7 @@ if (!function_exists('traceLog')) {
      */
     function traceLog()
     {
-        call_user_func_array('trace_log', func_get_args());
+        call_user_func_array([Helper::class, 'traceLog'], func_get_args());
     }
 }
 
@@ -122,33 +77,7 @@ if (!function_exists('trace_sql')) {
      */
     function trace_sql()
     {
-        if (!defined('WINTER_NO_EVENT_LOGGING')) {
-            define('WINTER_NO_EVENT_LOGGING', 1);
-        }
-
-        if (!defined('WINTER_TRACING_SQL')) {
-            define('WINTER_TRACING_SQL', 1);
-        }
-        else {
-            return;
-        }
-
-        Event::listen('illuminate.query', function ($query, $bindings, $time, $name) {
-            $data = compact('bindings', 'time', 'name');
-
-            foreach ($bindings as $i => $binding) {
-                if ($binding instanceof \DateTime) {
-                    $bindings[$i] = $binding->format('\'Y-m-d H:i:s\'');
-                } elseif (is_string($binding)) {
-                    $bindings[$i] = "'$binding'";
-                }
-            }
-
-            $query = str_replace(['%', '?'], ['%%', '%s'], $query);
-            $query = vsprintf($query, $bindings);
-
-            traceLog($query);
-        });
+        Helper::traceSql();
     }
 }
 
@@ -159,7 +88,7 @@ if (!function_exists('traceSql')) {
      */
     function traceSql()
     {
-        trace_sql();
+        Helper::traceSql();
     }
 }
 
@@ -172,7 +101,7 @@ if (!function_exists('config_path')) {
      */
     function config_path($path = '')
     {
-        return PathResolver::join(app('path.config'), $path);
+        return Helper::configPath($path);
     }
 }
 
@@ -185,7 +114,7 @@ if (!function_exists('plugins_path')) {
      */
     function plugins_path($path = '')
     {
-        return PathResolver::join(app('path.plugins'), $path);
+        return Helper::pluginsPath($path);
     }
 }
 
@@ -198,7 +127,7 @@ if (!function_exists('uploads_path')) {
      */
     function uploads_path($path = '')
     {
-        return PathResolver::join(Config::get('cms.storage.uploads.path', app('path.uploads')), $path);
+        return Helper::uploadsPath($path);
     }
 }
 
@@ -211,7 +140,7 @@ if (!function_exists('media_path')) {
      */
     function media_path($path = '')
     {
-        return PathResolver::join(Config::get('cms.storage.media.path', app('path.media')), $path);
+        return Helper::mediaPath($path);
     }
 }
 
@@ -224,7 +153,7 @@ if (!function_exists('themes_path')) {
      */
     function themes_path($path = '')
     {
-        return PathResolver::join(app('path.themes'), $path);
+        return Helper::themesPath($path);
     }
 }
 
@@ -237,7 +166,7 @@ if (!function_exists('temp_path')) {
      */
     function temp_path($path = '')
     {
-        return PathResolver::join(app('path.temp'), $path);
+        return Helper::tempPath($path);
     }
 }
 
@@ -251,11 +180,7 @@ if (!function_exists('e')) {
      */
     function e($value, $doubleEncode = false)
     {
-        if ($value instanceof \Illuminate\Contracts\Support\Htmlable) {
-            return $value->toHtml();
-        }
-
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', $doubleEncode);
+        return Helper::e($value, $doubleEncode);
     }
 }
 
@@ -270,7 +195,7 @@ if (!function_exists('trans')) {
      */
     function trans($id = null, $parameters = [], $locale = null)
     {
-        return app('translator')->trans($id, $parameters, $locale);
+        return Helper::trans($id, $parameters, $locale);
     }
 }
 
@@ -297,7 +222,7 @@ if (!function_exists('collect')) {
      */
     function collect($value = null)
     {
-        return new Collection($value);
+        return Helper::collect($value);
     }
 }
 
@@ -939,6 +864,6 @@ if (!function_exists('resolve_path')) {
      */
     function resolve_path($path)
     {
-        return PathResolver::resolve($path);
+        return Helper::resolvePath($path);
     }
 }

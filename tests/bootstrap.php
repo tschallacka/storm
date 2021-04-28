@@ -4,23 +4,6 @@ use Winter\Storm\Support\Helper;
 use Winter\Storm\Support\Str;
 
 /**
- * Suppresses only the weird messages about the wrong/incorrect declaration.
- * @param int $err_no
- * @param str $err_str
- * @return bool
- */
-function orbisius_p3778_warning_suppressor_suppress_bad_warnings($err_no, $err_str, $errfile = '', $errline = '') {
-    // If the function returns FALSE then the normal error handler continues.
-    $contains_stupid_warning = stripos($err_str, 'Declaration of') !== false;
-    return $contains_stupid_warning;
-}
-
-if ( version_compare( phpversion(), 7, '>=' ) ) {
-    // https://stackoverflow.com/questions/36079651/silence-declaration-should-be-compatible-warnings-in-php-7
-    set_error_handler('orbisius_p3778_warning_suppressor_suppress_bad_warnings');
-}
-
-/**
  * Define local helper functions.
  * The library should not rest on an "expected" implementation of a function.
  * Use direct helper calls.
