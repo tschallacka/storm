@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Config;
 
+use Winter\Storm\Support\Arr;
 use Closure;
 use ArrayAccess;
 use Illuminate\Contracts\Config\Repository as RepositoryContract;
@@ -112,7 +113,7 @@ class Repository implements ArrayAccess, RepositoryContract
 
         $this->load($group, $namespace, $collection);
 
-        return array_get($this->items[$collection], $item, $default);
+        return Arr::get($this->items[$collection], $item, $default);
     }
 
     /**

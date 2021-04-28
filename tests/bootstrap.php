@@ -1,14 +1,9 @@
 <?php
-use Winter\Storm\Support\Arr;
-use Winter\Storm\Support\Helper;
-use Winter\Storm\Support\Str;
-
 /**
- * Define local helper functions.
- * The library should not rest on an "expected" implementation of a function.
- * Use direct helper calls.
+ * The library should internally not rely on helper functions. These may be overwritten by the end user of the library
+ * giving unpredictable results when something like array_dot would return just dots for every item in an array.
  */
-function throwError($called, $class, $class_method) 
+function throwBadFunctionCallException($called, $class, $class_method) 
 {
     throw new BadFunctionCallException('Called helper method ' . $called . '() from library code. The usage of helper '.
         'methods in library code is discouraged as it may lead to undefined behaviour, as these can be overridden '.
@@ -17,308 +12,301 @@ function throwError($called, $class, $class_method)
 
 function input($name = null, $default = null)
 {
-    throwError('input', Helper::class, 'input');
+    throwBadFunctionCallException('input', 'Winter\Storm\Support\Helper', 'input');
 }
 
 function post($name = null, $default = null)
 {
-    throwError('post', Helper::class, 'post');
+    throwBadFunctionCallException('post', 'Winter\Storm\Support\Helper', 'post');
 }
 
 function get($name = null, $default = null)
 {
-    throwError('get', Helper::class, 'get');
+    throwBadFunctionCallException('get', 'Winter\Storm\Support\Helper', 'get');
 }
 function trace_log()
 {
-    throwError('trace_log', Helper::class, 'traceLog');
+    throwBadFunctionCallException('trace_log', 'Winter\Storm\Support\Helper', 'traceLog');
 }
 
 function traceLog()
 {
-    throwError('traceLog', Helper::class, 'traceLog');
+    throwBadFunctionCallException('traceLog', 'Winter\Storm\Support\Helper', 'traceLog');
 }
 
 function trace_sql()
 {
-    throwError('trace_sql', Helper::class, 'traceSql');
+    throwBadFunctionCallException('trace_sql', 'Winter\Storm\Support\Helper', 'traceSql');
 }
 
 function traceSql()
 {
-    throwError('traceSql', Helper::class, 'traceSql');
+    throwBadFunctionCallException('traceSql', 'Winter\Storm\Support\Helper', 'traceSql');
 }
 
 function config_path($path = '')
 {
-    throwError('config_path', Helper::class, 'configPath');
+    throwBadFunctionCallException('config_path', 'Winter\Storm\Support\Helper', 'configPath');
 }
 
 function plugins_path($path = '')
 {
-    throwError('plugins_path', Helper::class, 'pluginsPath');
+    throwBadFunctionCallException('plugins_path', 'Winter\Storm\Support\Helper', 'pluginsPath');
 }
 
 function uploads_path($path = '')
 {
-    throwError('uploads_path', Helper::class, 'uploadsPath');
+    throwBadFunctionCallException('uploads_path', 'Winter\Storm\Support\Helper', 'uploadsPath');
 }
 
 function media_path($path = '')
 {
-    throwError('media_path', Helper::class, 'mediaPath');
+    throwBadFunctionCallException('media_path', 'Winter\Storm\Support\Helper', 'mediaPath');
 }
 
 function themes_path($path = '')
 {
-    throwError('themes_path', Helper::class, 'themesPath');
+    throwBadFunctionCallException('themes_path', 'Winter\Storm\Support\Helper', 'themesPath');
 }
 
 
 function temp_path($path = '')
 {
-    throwError('temp_path', Helper::class, 'tempPath');
+    throwBadFunctionCallException('temp_path', 'Winter\Storm\Support\Helper', 'tempPath');
 }
 
 function e($value, $doubleEncode = false)
 {
-    throwError('e', Helper::class, 'e');
+    throwBadFunctionCallException('e', 'Winter\Storm\Support\Helper', 'e');
 }
 
 function trans($id = null, $parameters = [], $locale = null)
 {
-    throwError('trans', Helper::class, 'trans');
+    throwBadFunctionCallException('trans', 'Winter\Storm\Support\Helper', 'trans');
 }
 
 function array_build($array, callable $callback)
 {
-    throwError('array_build', Arr::class, 'build');
-}
-
-function collect($value = null)
-{
-    throwError('collect', Helper::class, 'collect');
+    throwBadFunctionCallException('array_build', 'Winter\Storm\Support\Arr', 'build');
 }
 
 function array_add($array, $key, $value)
 {
-    throwError('array_add', Arr::class, 'add');
+    throwBadFunctionCallException('array_add', 'Winter\Storm\Support\Arr', 'add');
 }
 
 function array_collapse($array)
 {
-    throwError('array_collapse', Arr::class, 'collapse');
+    throwBadFunctionCallException('array_collapse', 'Winter\Storm\Support\Arr', 'collapse');
 }
 
 function array_divide($array)
 {
-    throwError('array_divide', Arr::class, 'divide');
+    throwBadFunctionCallException('array_divide', 'Winter\Storm\Support\Arr', 'divide');
 }
 
 function array_dot($array, $prepend = '')
 {
-    throwError('array_dot', Arr::class, 'dot');
+    throwBadFunctionCallException('array_dot', 'Winter\Storm\Support\Arr', 'dot');
 }
 
 function array_undot(array $dotArray)
 {
-    throwError('array_undot', Arr::class, 'undot');
+    throwBadFunctionCallException('array_undot', 'Winter\Storm\Support\Arr', 'undot');
 }
 
 function array_except($array, $keys)
 {
-    throwError('array_except', Arr::class, 'except');
+    throwBadFunctionCallException('array_except', 'Winter\Storm\Support\Arr', 'except');
 }
 
 function array_first($array, callable $callback = null, $default = null)
 {
-    throwError('array_first', Arr::class, 'first');
+    throwBadFunctionCallException('array_first', 'Winter\Storm\Support\Arr', 'first');
 }
 
 function array_flatten($array, $depth = INF)
 {
-    throwError('array_flatten', Arr::class, 'flatten');
+    throwBadFunctionCallException('array_flatten', 'Winter\Storm\Support\Arr', 'flatten');
 }
 
 function array_forget(&$array, $keys)
 {
-    throwError('array_forget', Arr::class, 'forget');
+    throwBadFunctionCallException('array_forget', 'Winter\Storm\Support\Arr', 'forget');
 }
 
 function array_get($array, $key, $default = null)
 {
-    throwError('array_get', Arr::class, 'get');
+    throwBadFunctionCallException('array_get', 'Winter\Storm\Support\Arr', 'get');
 }
 
 function array_has($array, $keys)
 {
-    throwError('array_has', Arr::class, 'has');
+    throwBadFunctionCallException('array_has', 'Winter\Storm\Support\Arr', 'has');
 }
 
 function array_last($array, callable $callback = null, $default = null)
 {
-    throwError('array_last', Arr::class, 'last');
+    throwBadFunctionCallException('array_last', 'Winter\Storm\Support\Arr', 'last');
 }
 
 function array_only($array, $keys)
 {
-    throwError('array_only', Arr::class, 'only');
+    throwBadFunctionCallException('array_only', 'Winter\Storm\Support\Arr', 'only');
 }
 
 function array_pluck($array, $value, $key = null)
 {
-    throwError('array_pluck', Arr::class, 'pluck');
+    throwBadFunctionCallException('array_pluck', 'Winter\Storm\Support\Arr', 'pluck');
 }
 
 function array_prepend($array, $value, $key = null)
 {
-    throwError('array_prepend', Arr::class, 'prepend');
+    throwBadFunctionCallException('array_prepend', 'Winter\Storm\Support\Arr', 'prepend');
 }
 
 function array_pull(&$array, $key, $default = null)
 {
-    throwError('array_pull', Arr::class, 'pull');
+    throwBadFunctionCallException('array_pull', 'Winter\Storm\Support\Arr', 'pull');
 }
 
 function array_random($array, $num = null)
 {
-    throwError('array_random', Arr::class, 'random');
+    throwBadFunctionCallException('array_random', 'Winter\Storm\Support\Arr', 'random');
 }
 
 function array_set(&$array, $key, $value)
 {
-    throwError('array_set', Arr::class, 'set');
+    throwBadFunctionCallException('array_set', 'Winter\Storm\Support\Arr', 'set');
 }
 
 function array_sort($array, $callback = null)
 {
-    throwError('array_sort', Arr::class, 'sort');
+    throwBadFunctionCallException('array_sort', 'Winter\Storm\Support\Arr', 'sort');
 }
 
 function array_sort_recursive($array)
 {
-    throwError('array_sort_recursive', Arr::class, 'sortRecursive');
+    throwBadFunctionCallException('array_sort_recursive', 'Winter\Storm\Support\Arr', 'sortRecursive');
 }
 
 function array_where($array, callable $callback)
 {
-    throwError('array_where', Arr::class, 'where');
+    throwBadFunctionCallException('array_where', 'Winter\Storm\Support\Arr', 'where');
 }
 
 function array_wrap($value)
 {
-    throwError('array_wrap', Arr::class, 'wrap');
+    throwBadFunctionCallException('array_wrap', 'Winter\Storm\Support\Arr', 'wrap');
 }
 
 function camel_case($value)
 {
-    throwError('camel_case', Str::class, 'camel');
+    throwBadFunctionCallException('camel_case', 'Winter\Storm\Support\Str', 'camel');
     return Str::camel($value);
 }
 
 function ends_with($haystack, $needles)
 {
-    throwError('ends_with', Str::class, 'endsWith');
+    throwBadFunctionCallException('ends_with', 'Winter\Storm\Support\Str', 'endsWith');
 }
 
 function kebab_case($value)
 {
-    throwError('kebab_case', Str::class, 'kebab');
+    throwBadFunctionCallException('kebab_case', 'Winter\Storm\Support\Str', 'kebab');
 }
 
 function snake_case($value, $delimiter = '_')
 {
-    throwError('snake_case', Str::class, 'snake');
+    throwBadFunctionCallException('snake_case', 'Winter\Storm\Support\Str', 'snake');
 }
 
 function starts_with($haystack, $needles)
 {
-    throwError('starts_with', Str::class, 'startsWith');
+    throwBadFunctionCallException('starts_with', 'Winter\Storm\Support\Str', 'startsWith');
 }
 
 function str_after($subject, $search)
 {
-    throwError('str_after', Str::class, 'after');
+    throwBadFunctionCallException('str_after', 'Winter\Storm\Support\Str', 'after');
 }
 
 function str_before($subject, $search)
 {
-    throwError('str_before', Str::class, 'before');
+    throwBadFunctionCallException('str_before', 'Winter\Storm\Support\Str', 'before');
 }
 
 function str_contains($haystack, $needles)
 {
-    throwError('str_contains', Str::class, 'contains');
+    throwBadFunctionCallException('str_contains', 'Winter\Storm\Support\Str', 'contains');
 }
 
 function str_finish($value, $cap)
 {
-    throwError('str_finish', Str::class, 'finish');
+    throwBadFunctionCallException('str_finish', 'Winter\Storm\Support\Str', 'finish');
 }
 
 function str_is($pattern, $value)
 {
-    throwError('str_is', Str::class, 'is');
+    throwBadFunctionCallException('str_is', 'Winter\Storm\Support\Str', 'is');
 }
 
 function str_limit($value, $limit = 100, $end = '...')
 {
-    throwError('str_limit', Str::class, 'limit');
+    throwBadFunctionCallException('str_limit', 'Winter\Storm\Support\Str', 'limit');
 }
 
 function str_plural($value, $count = 2)
 {
-    throwError('str_plural', Str::class, 'plural');
+    throwBadFunctionCallException('str_plural', 'Winter\Storm\Support\Str', 'plural');
 }
 
 function str_random($length = 16)
 {
-    throwError('str_random', Str::class, 'random');
+    throwBadFunctionCallException('str_random', 'Winter\Storm\Support\Str', 'random');
 }
 
 function str_replace_array($search, array $replace, $subject)
 {
-    throwError('str_replace_array', Str::class, 'replaceArray');
+    throwBadFunctionCallException('str_replace_array', 'Winter\Storm\Support\Str', 'replaceArray');
 }
 
 function str_replace_first($search, $replace, $subject)
 {
-    throwError('str_replace_first', Str::class, 'replaceFirst');
+    throwBadFunctionCallException('str_replace_first', 'Winter\Storm\Support\Str', 'replaceFirst');
 }
 
 function str_replace_last($search, $replace, $subject)
 {
-    throwError('str_replace_last', Str::class, 'replaceLast');
+    throwBadFunctionCallException('str_replace_last', 'Winter\Storm\Support\Str', 'replaceLast');
 }
 
 function str_singular($value)
 {
-    throwError('str_singular', Str::class, 'singular');
+    throwBadFunctionCallException('str_singular', 'Winter\Storm\Support\Str', 'singular');
 }
 
 function str_slug($title, $separator = '-', $language = 'en')
 {
-    throwError('str_slug', Str::class, 'slug');
+    throwBadFunctionCallException('str_slug', 'Winter\Storm\Support\Str', 'slug');
 }
 
 function str_start($value, $prefix)
 {
-    throwError('str_start', Str::class, 'start');
+    throwBadFunctionCallException('str_start', 'Winter\Storm\Support\Str', 'start');
 }
 
 function studly_case($value)
 {
-    throwError('studly_case', Str::class, 'studly');
+    throwBadFunctionCallException('studly_case', 'Winter\Storm\Support\Str', 'studly');
 }
 
 function title_case($value)
 {
-    throwError('title_case', Str::class, 'title');
+    throwBadFunctionCallException('title_case', 'Winter\Storm\Support\Str', 'title');
 }
 
 function resolve_path($path)
 {
-    throwError('resolve_path', Helper::class, 'resolvePath');
+    throwBadFunctionCallException('resolve_path', 'Winter\Storm\Support\Helper', 'resolvePath');
 }
-
-require_once(__DIR__.'/../vendor/autoload.php');

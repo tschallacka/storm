@@ -76,9 +76,6 @@
         }
     },
     "autoload-dev": {
-        "files": [
-            "tests/bootstrap.php"
-        ],
         "classmap": [
             "tests/TestCase.php",
             "tests/DbTestCase.php"
@@ -86,7 +83,7 @@
     },
     "scripts": {
         "test": [
-            "phpunit ./tests --stop-on-failure"
+            "phpunit --prepend=tests/bootstrap.php ./tests --stop-on-failure"
         ],
         "lint": [
             "parallel-lint --exclude vendor --exclude storage --exclude tests/fixtures/plugins/testvendor/goto/Plugin.php ."

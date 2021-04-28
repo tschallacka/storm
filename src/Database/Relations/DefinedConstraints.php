@@ -77,7 +77,7 @@ trait DefinedConstraints
     /**
      * Add query based constraints.
      *
-     * @param Winter\Storm\Database\QueryBuilder $query
+     * @param \Winter\Storm\Database\QueryBuilder $query
      * @param array $args
      */
     public function addDefinedConstraintsToQuery($query, $args = null)
@@ -98,7 +98,7 @@ trait DefinedConstraints
          */
         $hasCountArg = Arr::get($args, 'count') !== null;
         if (($orderBy = Arr::get($args, 'order')) && !$hasCountArg) {
-            if (!Arr::get($orderBy)) {
+            if (!is_array($orderBy)) {
                 $orderBy = [$orderBy];
             }
 

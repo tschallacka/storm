@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Winter\Storm\Support\Arr;
 use Illuminate\Database\Eloquent\Collection as CollectionBase;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as BelongsToManyBase;
 
@@ -125,7 +126,7 @@ class BelongsToMany extends BelongsToManyBase
     public function attach($id, array $attributes = [], $touch = true)
     {
         $insertData = $this->formatAttachRecords($this->parseIds($id), $attributes);
-        $attachedIdList = array_pluck($insertData, $this->relatedPivotKey);
+        $attachedIdList = Arr::pluck($insertData, $this->relatedPivotKey);
 
         /**
          * @event model.relation.beforeAttach
