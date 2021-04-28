@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Support\Testing\Fakes;
 
 use Winter\Storm\Mail\Mailable;
+use Winter\Storm\Support\Arr;
 
 class MailFake extends \Illuminate\Support\Testing\Fakes\MailFake
 {
@@ -84,8 +85,8 @@ class MailFake extends \Illuminate\Support\Testing\Fakes\MailFake
         if (is_string($view)) {
             $html = $view;
         } else if (is_array($view)) {
-            $html = array_get($view, 0, array_get($view, 'html'));
-            $text = array_get($view, 1, array_get($view, 'text'));
+            $html = Arr::get($view, 0, Arr::get($view, 'html'));
+            $text = Arr::get($view, 1, Arr::get($view, 'text'));
         }
 
         if ($html) {

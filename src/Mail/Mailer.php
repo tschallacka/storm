@@ -350,7 +350,7 @@ class Mailer extends MailerBase
                     $result[$address] = $name;
                 }
                 elseif (is_array($person)) {
-                    if (!$address = Arr::get($person, 'email', array_get($person, 'address'))) {
+                    if (!$address = Arr::get($person, 'email', Arr::get($person, 'address'))) {
                         continue;
                     }
 

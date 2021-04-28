@@ -1,9 +1,10 @@
 <?php
 
 use Winter\Storm\Filesystem\PathResolver;
+use Winter\Storm\Support\Helper;
 
 /**
- * The tests below will test both the resolve_path() method (and wrapped PathResolver::resolve() method),
+ * The tests below will test both the Helper::resolvePath() method (and wrapped PathResolver::resolve() method),
  * as well as the original realpath() method to ensure we maintain parity with the expected functionality of
  * realpath(), except for where we've deviated for flexibility.
  */
@@ -29,7 +30,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
-            resolve_path($dir . '/dir1')
+            Helper::resolvePath($dir . '/dir1')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
@@ -38,7 +39,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
-            resolve_path($dir . '/dir1/subdir1/')
+            Helper::resolvePath($dir . '/dir1/subdir1/')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
@@ -47,7 +48,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/file1'),
-            resolve_path($dir . '/dir1/subdir1/file1')
+            Helper::resolvePath($dir . '/dir1/subdir1/file1')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/file1'),
@@ -56,7 +57,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir2/file2'),
-            resolve_path($dir . '/dir2/file2')
+            Helper::resolvePath($dir . '/dir2/file2')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir2/file2'),
@@ -67,7 +68,7 @@ class PathResolverTest extends TestCase
         if (!$this->onWindows) {
             $this->assertEquals(
                 str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/file1'),
-                resolve_path($dir . '\\dir1\\subdir1\\file1')
+                Helper::resolvePath($dir . '\\dir1\\subdir1\\file1')
             );
             $this->assertFalse(
                 realpath($dir . '\\dir1\\subdir1\\file1')
@@ -77,7 +78,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/missing/missing2'),
-            resolve_path($dir . '/dir1/subdir1/missing/missing2')
+            Helper::resolvePath($dir . '/dir1/subdir1/missing/missing2')
         );
         $this->assertFalse(
             realpath($dir . '/dir1/subdir1/missing/missing2')
@@ -85,7 +86,7 @@ class PathResolverTest extends TestCase
 
         // Both functions should fail as you cannot relatively traverse a path further if it hits a file
         $this->assertFalse(
-            resolve_path($dir . '/dir1/subdir1/file1/missing')
+            Helper::resolvePath($dir . '/dir1/subdir1/file1/missing')
         );
         $this->assertFalse(
             realpath($dir . '/dir1/subdir1/file1/missing')
@@ -93,7 +94,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/spaced dir'),
-            resolve_path($dir . '/spaced dir/')
+            Helper::resolvePath($dir . '/spaced dir/')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/spaced dir'),
@@ -102,7 +103,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/spaced dir/spaced file'),
-            resolve_path($dir . '/spaced dir/spaced file')
+            Helper::resolvePath($dir . '/spaced dir/spaced file')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/spaced dir/spaced file'),
@@ -116,7 +117,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
-            resolve_path($dir . '/dir1/./subdir1/..')
+            Helper::resolvePath($dir . '/dir1/./subdir1/..')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
@@ -125,7 +126,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
-            resolve_path($dir . '/dir1/subdir1/../')
+            Helper::resolvePath($dir . '/dir1/subdir1/../')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
@@ -134,7 +135,7 @@ class PathResolverTest extends TestCase
 
         // Both functions should fail as you cannot relatively traverse a path further if it hits a file
         $this->assertFalse(
-            resolve_path($dir . '/dir1/subdir1/file1/../..')
+            Helper::resolvePath($dir . '/dir1/subdir1/file1/../..')
         );
         $this->assertFalse(
             realpath($dir . '/dir1/subdir1/file1/../..')
@@ -142,7 +143,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
-            resolve_path($dir . '/dir1/subdir1/../../dir1/./../dir1/')
+            Helper::resolvePath($dir . '/dir1/subdir1/../../dir1/./../dir1/')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
@@ -152,7 +153,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/missing/missing2'),
-            resolve_path($dir . '/dir1/subdir1/../../dir1/./../dir1/missing/missing2')
+            Helper::resolvePath($dir . '/dir1/subdir1/../../dir1/./../dir1/missing/missing2')
         );
         $this->assertFalse(
             realpath($dir . '/dir1/subdir1/../../dir1/./../dir1/missing/missing2')
@@ -161,7 +162,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/missing/missing2'),
-            resolve_path($dir . '/dir1/subdir1/missing/../../../dir1/./../dir1/missing/missing2')
+            Helper::resolvePath($dir . '/dir1/subdir1/missing/../../../dir1/./../dir1/missing/missing2')
         );
         $this->assertFalse(
             realpath($dir . '/dir1/subdir1/missing/../../../dir1/./../dir1/missing/missing2')
@@ -178,7 +179,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(__DIR__)) . '/tests/fixtures/paths/dir1/subdir1'),
-            resolve_path($baseWorkingDir . 'tests/fixtures/paths/dir1/subdir1')
+            Helper::resolvePath($baseWorkingDir . 'tests/fixtures/paths/dir1/subdir1')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(__DIR__)) . '/tests/fixtures/paths/dir1/subdir1'),
@@ -187,7 +188,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(__DIR__)) . '/tests/fixtures/paths/dir1/subdir1'),
-            resolve_path($baseWorkingDir . 'tests/../tests/fixtures/paths/dir1/subdir1')
+            Helper::resolvePath($baseWorkingDir . 'tests/../tests/fixtures/paths/dir1/subdir1')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(__DIR__)) . '/tests/fixtures/paths/dir1/subdir1'),
@@ -196,7 +197,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(dirname(__DIR__)))),
-            resolve_path($baseWorkingDir . '..')
+            Helper::resolvePath($baseWorkingDir . '..')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(dirname(__DIR__)))),
@@ -206,7 +207,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, dirname(dirname(__DIR__)) . '/tests/fixtures/paths/dir1/missing'),
-            resolve_path($baseWorkingDir . 'tests/fixtures/paths/dir1/missing')
+            Helper::resolvePath($baseWorkingDir . 'tests/fixtures/paths/dir1/missing')
         );
         $this->assertFalse(
             realpath($baseWorkingDir . 'tests/fixtures/paths/dir1/missing')
@@ -233,7 +234,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
-            resolve_path($dir . '/dir2/link2')
+            Helper::resolvePath($dir . '/dir2/link2')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
@@ -243,7 +244,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/missing/missing2'),
-            resolve_path($dir . '/dir2/link2/missing/missing2')
+            Helper::resolvePath($dir . '/dir2/link2/missing/missing2')
         );
         $this->assertFalse(
             realpath($dir . '/dir2/link2/missing/missing2')
@@ -252,7 +253,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/missing'),
-            resolve_path($dir . '/dir2/link2/../missing')
+            Helper::resolvePath($dir . '/dir2/link2/../missing')
         );
         $this->assertFalse(
             realpath($dir . '/dir2/link2/../missing')
@@ -277,7 +278,7 @@ class PathResolverTest extends TestCase
 
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
-            resolve_path($dir . '/dir3/link3')
+            Helper::resolvePath($dir . '/dir3/link3')
         );
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
@@ -287,7 +288,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/missing/missing2'),
-            resolve_path($dir . '/dir3/link3/missing/missing2')
+            Helper::resolvePath($dir . '/dir3/link3/missing/missing2')
         );
         $this->assertFalse(
             realpath($dir . '/dir3/link3/missing/missing2')
@@ -296,7 +297,7 @@ class PathResolverTest extends TestCase
         // realpath() won't work for this, as it does not resolve missing directories and files
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/missing'),
-            resolve_path($dir . '/dir3/link3/../missing')
+            Helper::resolvePath($dir . '/dir3/link3/../missing')
         );
         $this->assertFalse(
             realpath($dir . '/dir3/link3/../missing')
@@ -389,13 +390,13 @@ class PathResolverTest extends TestCase
         // Check a normal location
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1'),
-            resolve_path($dir . '/dir1')
+            Helper::resolvePath($dir . '/dir1')
         );
 
         // Check a valid, but missing, location
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1/missing'),
-            resolve_path($dir . '/dir1/subdir1/missing')
+            Helper::resolvePath($dir . '/dir1/subdir1/missing')
         );
 
         // Create an absolute symlink to a valid location
@@ -415,7 +416,7 @@ class PathResolverTest extends TestCase
         // Check an absolute symlink to a valid location
         $this->assertEquals(
             str_replace('/', DIRECTORY_SEPARATOR, $dir . '/dir1/subdir1'),
-            resolve_path($dir . '/dir2/link2')
+            Helper::resolvePath($dir . '/dir2/link2')
         );
 
         // Remove test symlink
@@ -427,9 +428,9 @@ class PathResolverTest extends TestCase
         }
 
         // Check an outside location fails
-        $this->assertFalse(resolve_path($outsideDir));
+        $this->assertFalse(Helper::resolvePath($outsideDir));
 
         // Check an absolute symlink to an outside location fails
-        $this->assertFalse(resolve_path($dir . '/dir2/link3'));
+        $this->assertFalse(Helper::resolvePath($dir . '/dir2/link3'));
     }
 }

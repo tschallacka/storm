@@ -290,7 +290,7 @@ class ClassLoader
     {
         if (count($this->namespaceAliases)) {
             foreach ($this->namespaceAliases as $alias => $original) {
-                if (starts_with($class, $alias)) {
+                if (Str::startsWith($class, $alias)) {
                     return str_replace($alias, $original, $class);
                 }
             }

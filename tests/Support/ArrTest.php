@@ -67,6 +67,6 @@ class ArrTest extends TestCase
                     ]
                 ]
             ]
-        ], array_undot($array));
+        ], Arr::undot($array));
     }
 }

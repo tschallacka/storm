@@ -2,6 +2,7 @@
 
 use Winter\Storm\Exception\ApplicationException;
 use Winter\Storm\Support\Arr;
+use Winter\Storm\Support\Str;
 
 /**
  * Dynamic Syntax parser
@@ -416,7 +417,7 @@ class FieldParser
     {
         $result = [];
 
-        if (str_contains($optionsString, '::')) {
+        if (Str::contains($optionsString, '::')) {
             $options = explode('::', $optionsString);
             if (count($options) === 2 && class_exists($options[0]) && method_exists($options[0], $options[1])) {
                 $result = $options[0]::{$options[1]}();

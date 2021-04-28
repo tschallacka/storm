@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Halcyon\Traits;
 
 use Illuminate\Support\MessageBag;
+use Winter\Storm\Support\Arr;
 use Winter\Storm\Support\Str;
 use Winter\Storm\Support\Facades\Validator;
 use Winter\Storm\Support\Facades\Input;
