@@ -2,6 +2,7 @@
 
 use Winter\Storm\Config\Repository;
 use Winter\Storm\Config\FileLoader;
+use Winter\Storm\Support\Arr;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Contracts\Foundation\Application;
 use Exception;
@@ -46,7 +47,7 @@ class LoadConfiguration
             return $config['hosts'][$hostname];
         }
 
-        return env('APP_ENV', array_get($config, 'default', 'production'));
+        return env('APP_ENV', Arr::get($config, 'default', 'production'));
     }
 
     /**

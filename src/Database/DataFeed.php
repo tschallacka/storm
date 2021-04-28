@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Database;
 
+use Winter\Storm\Support\Arr;
 use Db;
 use Str;
 use Closure;
@@ -290,7 +291,7 @@ class DataFeed
      */
     protected function getDataByTag($tag)
     {
-        if (!$data = array_get($this->collection, $tag)) {
+        if (!$data = Arr::get($this->collection, $tag)) {
             throw new Exception('Unable to find model in collection with tag: ' . $tag);
         }
 

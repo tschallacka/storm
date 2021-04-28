@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Halcyon\Processors;
 
 use Winter\Storm\Parse\Ini;
+use Winter\Storm\Support\Arr;
 use Winter\Storm\Support\Str;
 
 /**
@@ -27,12 +28,12 @@ class SectionParser
         ], $options));
 
         if (!$isCompoundObject) {
-            return array_get($data, 'content');
+            return Arr::get($data, 'content');
         }
 
         $iniParser = new Ini;
-        $code = trim(array_get($data, 'code'));
-        $markup = trim(array_get($data, 'markup'));
+        $code = trim(Arr::get($data, 'code'));
+        $markup = trim(Arr::get($data, 'markup'));
 
         $trim = function (&$values) use (&$trim) {
             foreach ($values as &$value) {
@@ -45,7 +46,7 @@ class SectionParser
             }
         };
 
-        $settings = array_get($data, 'settings', []);
+        $settings = Arr::get($data, 'settings', []);
         $trim($settings);
 
         /*

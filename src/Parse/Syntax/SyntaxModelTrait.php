@@ -1,5 +1,7 @@
 <?php namespace Winter\Storm\Parse\Syntax;
 
+use Winter\Storm\Support\Arr;
+use Winter\Storm\Support\Str;
 use Request;
 
 trait SyntaxModelTrait
@@ -76,15 +78,15 @@ trait SyntaxModelTrait
      */
     protected function getThumbForImage($image, $params = [])
     {
-        $imageWidth = array_get($params, 'imageWidth');
-        $imageHeight = array_get($params, 'imageHeight');
+        $imageWidth = Arr::get($params, 'imageWidth');
+        $imageHeight = Arr::get($params, 'imageHeight');
         if ($imageWidth && $imageHeight) {
             $path = $image->getThumb($imageWidth, $imageHeight, ['mode' => 'crop']);
         } else {
             $path = $image->getPath();
         }
 
-        if (!starts_with($path, ['//', 'http://', 'https://'])) {
+        if (!Str::startsWith($path, ['//', 'http://', 'https://'])) {
             $path = Request::getSchemeAndHttpHost() . $path;
         }
 
@@ -116,7 +118,7 @@ trait SyntaxModelTrait
             }
 
             if ($params['type'] == 'repeater') {
-                $params['form']['fields'] = array_get($params, 'fields', []);
+                $params['form']['fields'] = Arr::get($params, 'fields', []);
                 unset($params['fields']);
             }
 

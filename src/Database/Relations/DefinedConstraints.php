@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Database\Relations;
 
+use Winter\Storm\Support\Arr;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany as BelongsToManyBase;
 
 /*
@@ -37,28 +38,28 @@ trait DefinedConstraints
         /*
          * Default models (belongsTo)
          */
-        if ($defaultData = array_get($args, 'default')) {
+        if ($defaultData = Arr::get($args, 'default')) {
             $relation->withDefault($defaultData === true ? null : $defaultData);
         }
 
         /*
          * Pivot data (belongsToMany, morphToMany, morphByMany)
          */
-        if ($pivotData = array_get($args, 'pivot')) {
+        if ($pivotData = Arr::get($args, 'pivot')) {
             $relation->withPivot($pivotData);
         }
 
         /*
          * Pivot timestamps (belongsToMany, morphToMany, morphByMany)
          */
-        if (array_get($args, 'timestamps')) {
+        if (Arr::get($args, 'timestamps')) {
             $relation->withTimestamps();
         }
 
         /*
          * Count "helper" relation
          */
-        if ($count = array_get($args, 'count')) {
+        if ($count = Arr::get($args, 'count')) {
             if ($relation instanceof BelongsToManyBase) {
                 $relation->countMode = true;
             }
@@ -88,16 +89,16 @@ trait DefinedConstraints
         /*
          * Conditions
          */
-        if ($conditions = array_get($args, 'conditions')) {
+        if ($conditions = Arr::get($args, 'conditions')) {
             $query->whereRaw($conditions);
         }
 
         /*
          * Sort order
          */
-        $hasCountArg = array_get($args, 'count') !== null;
-        if (($orderBy = array_get($args, 'order')) && !$hasCountArg) {
-            if (!is_array($orderBy)) {
+        $hasCountArg = Arr::get($args, 'count') !== null;
+        if (($orderBy = Arr::get($args, 'order')) && !$hasCountArg) {
+            if (!Arr::get($orderBy)) {
                 $orderBy = [$orderBy];
             }
 
@@ -117,7 +118,7 @@ trait DefinedConstraints
         /*
          * Scope
          */
-        if ($scope = array_get($args, 'scope')) {
+        if ($scope = Arr::get($args, 'scope')) {
             $query->$scope($this->parent);
         }
     }

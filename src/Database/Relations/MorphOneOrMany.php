@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Db;
 use Illuminate\Database\Eloquent\Model;
+use Winter\Storm\Support\Arr;
 
 trait MorphOneOrMany
 {
@@ -72,7 +73,7 @@ trait MorphOneOrMany
         if ($sessionKey === null) {
             $options = $this->parent->getRelationDefinition($this->relationName);
 
-            if (array_get($options, 'delete', false)) {
+            if (Arr::get($options, 'delete', false)) {
                 $model->delete();
             }
             else {

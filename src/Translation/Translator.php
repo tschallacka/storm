@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Translation;
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Winter\Storm\Support\Str;
 use Illuminate\Translation\Translator as TranslatorBase;
 
 /**
@@ -140,9 +141,9 @@ class Translator extends TranslatorBase
     protected function getValidationSpecific($key, $replace, $locale)
     {
         if (
-            starts_with($key, 'validation.') &&
-            !starts_with($key, 'validation.custom.') &&
-            !starts_with($key, 'validation.attributes.')
+            Str::startsWith($key, 'validation.') &&
+            !Str::startsWith($key, 'validation.custom.') &&
+            !Str::startsWith($key, 'validation.attributes.')
         ) {
             $nativeKey = 'system::'.$key;
             $line = $this->get($nativeKey, $replace, $locale);

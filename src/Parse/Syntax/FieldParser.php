@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Parse\Syntax;
 
 use Winter\Storm\Exception\ApplicationException;
+use Winter\Storm\Support\Arr;
 
 /**
  * Dynamic Syntax parser
@@ -65,7 +66,7 @@ class FieldParser
     public function __construct($template = null, $options = [])
     {
         if ($template) {
-            $this->tagPrefix = array_get($options, 'tagPrefix', '');
+            $this->tagPrefix = Arr::get($options, 'tagPrefix', '');
             $this->template = $template;
             $this->processTemplate($template);
         }
@@ -168,7 +169,7 @@ class FieldParser
 
             if ($params['type'] == 'repeater') {
                 $defaults[$field] = [];
-                $defaults[$field][] = $this->getDefaultParams(array_get($params, 'fields', []));
+                $defaults[$field][] = $this->getDefaultParams(Arr::get($params, 'fields', []));
             } else {
                 $defaults[$field] = $params['default'] ?? null;
             }
@@ -262,7 +263,7 @@ class FieldParser
 
             if ($tagName == 'variable') {
                 $params['X_WINTER_IS_VARIABLE'] = true;
-                $tagName = array_get($params, 'type', 'text');
+                $tagName = Arr::get($params, 'type', 'text');
             }
 
             $params['type'] = $tagName;

@@ -5,6 +5,8 @@ use Cache;
 use Storage;
 use File as FileHelper;
 use Winter\Storm\Network\Http;
+use Winter\Storm\Support\Arr;
+use Winter\Storm\Support\Str;
 use Winter\Storm\Database\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File as FileObj;
@@ -313,7 +315,7 @@ class File extends Model
      */
     public function outputThumb($width, $height, $options = [], $returnResponse = false)
     {
-        $disposition = array_get($options, 'disposition', 'inline');
+        $disposition = Arr::get($options, 'disposition', 'inline');
         $options = $this->getDefaultThumbOptions($options);
         $this->getThumb($width, $height, $options);
         $thumbFile = $this->getThumbFilename($width, $height, $options);
@@ -703,7 +705,7 @@ class File extends Model
         $allFiles = $this->storageCmd('files', $directory);
         $collection = [];
         foreach ($allFiles as $file) {
-            if (starts_with(basename($file), $pattern)) {
+            if (Str::startsWith(basename($file), $pattern)) {
                 $collection[] = $file;
             }
         }

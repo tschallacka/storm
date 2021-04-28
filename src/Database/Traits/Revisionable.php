@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Database\Traits;
 
+use Winter\Storm\Support\Arr;
 use Db;
 use Exception;
 use DateTime;
@@ -74,7 +75,7 @@ trait Revisionable
 
             $toSave[] = [
                 'field' => $attribute,
-                'old_value' => array_get($this->original, $attribute),
+                'old_value' => Arr::get($this->original, $attribute),
                 'new_value' => $value,
                 'revisionable_type' => $relationObject->getMorphClass(),
                 'revisionable_id' => $this->getKey(),

@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Html;
 
+use Winter\Storm\Support\Arr;
 use Illuminate\Session\Store as Session;
 use Illuminate\Routing\UrlGenerator as UrlGeneratorBase;
 
@@ -110,9 +111,9 @@ class FormBuilder
      */
     public function open(array $options = [])
     {
-        $method = strtoupper(array_get($options, 'method', 'post'));
-        $request = array_get($options, 'request');
-        $model = array_get($options, 'model');
+        $method = strtoupper(Arr::get($options, 'method', 'post'));
+        $request = Arr::get($options, 'request');
+        $model = Arr::get($options, 'model');
 
         if ($model) {
             $this->model = $model;
@@ -121,7 +122,7 @@ class FormBuilder
         $append = $this->requestHandler($request);
 
         if ($method != 'GET') {
-            $append .= $this->sessionKey(array_get($options, 'sessionKey'));
+            $append .= $this->sessionKey(Arr::get($options, 'sessionKey'));
         }
 
         $attributes = [];
@@ -438,9 +439,9 @@ class FormBuilder
         // If the "size" attribute was not specified, we will just look for the regular
         // columns and rows attributes, using sane defaults if these do not exist on
         // the attributes array. We'll then return this entire options array back.
-        $cols = array_get($options, 'cols', 50);
+        $cols = Arr::get($options, 'cols', 50);
 
-        $rows = array_get($options, 'rows', 10);
+        $rows = Arr::get($options, 'rows', 10);
 
         return array_merge($options, compact('cols', 'rows'));
     }
@@ -987,7 +988,7 @@ class FormBuilder
             return object_get($this->model, $this->transformKey($name));
         }
         elseif (is_array($this->model)) {
-            return array_get($this->model, $this->transformKey($name));
+            return Arr::get($this->model, $this->transformKey($name));
         }
     }
 

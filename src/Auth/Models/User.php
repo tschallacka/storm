@@ -5,6 +5,7 @@ use Hash;
 use Winter\Storm\Database\Model;
 use InvalidArgumentException;
 use Exception;
+use Winter\Storm\Support\Str as StrHelper;
 
 /**
  * User model
@@ -472,7 +473,7 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
             // Now, let's check if the permission ends in a wildcard "*" symbol.
             // If it does, we'll check through all the merged permissions to see
             // if a permission exists which matches the wildcard.
-            if ((strlen($permission) > 1) && ends_with($permission, '*')) {
+            if ((strlen($permission) > 1) && StrHelper::endsWith($permission, '*')) {
                 $matched = false;
 
                 foreach ($mergedPermissions as $mergedPermission => $value) {
@@ -481,13 +482,13 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 
                     // We will make sure that the merged permission does not
                     // exactly match our permission, but starts with it.
-                    if ($checkPermission != $mergedPermission && starts_with($mergedPermission, $checkPermission) && $value == 1) {
+                    if ($checkPermission != $mergedPermission && StrHelper::startsWith($mergedPermission, $checkPermission) && $value == 1) {
                         $matched = true;
                         break;
                     }
                 }
             }
-            elseif ((strlen($permission) > 1) && starts_with($permission, '*')) {
+            elseif ((strlen($permission) > 1) && StrHelper::startsWith($permission, '*')) {
                 $matched = false;
 
                 foreach ($mergedPermissions as $mergedPermission => $value) {
@@ -496,7 +497,7 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 
                     // We will make sure that the merged permission does not
                     // exactly match our permission, but ends with it.
-                    if ($checkPermission != $mergedPermission && ends_with($mergedPermission, $checkPermission) && $value == 1) {
+                    if ($checkPermission != $mergedPermission && StrHelper::endsWith($mergedPermission, $checkPermission) && $value == 1) {
                         $matched = true;
                         break;
                     }
@@ -507,7 +508,7 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 
                 foreach ($mergedPermissions as $mergedPermission => $value) {
                     // This time check if the mergedPermission ends in wildcard "*" symbol.
-                    if ((strlen($mergedPermission) > 1) && ends_with($mergedPermission, '*')) {
+                    if ((strlen($mergedPermission) > 1) && StrHelper::endsWith($mergedPermission, '*')) {
                         $matched = false;
 
                         // Strip the '*' off the end of the permission.
@@ -515,7 +516,7 @@ class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
 
                         // We will make sure that the merged permission does not
                         // exactly match our permission, but starts with it.
-                        if ($checkMergedPermission != $permission && starts_with($permission, $checkMergedPermission) && $value == 1) {
+                        if ($checkMergedPermission != $permission && StrHelper::startsWith($permission, $checkMergedPermission) && $value == 1) {
                             $matched = true;
                             break;
                         }

@@ -681,7 +681,7 @@ class Builder
             return false;
         }
 
-        $mtime = $result ? array_get(reset($result), 'mtime') : null;
+        $mtime = $result ? Arr::get(reset($result), 'mtime') : null;
 
         list($name, $extension) = $this->selectSingle;
 

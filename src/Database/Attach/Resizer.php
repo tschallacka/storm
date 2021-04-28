@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Database\Attach;
 
+use Winter\Storm\Support\Arr;
 use Symfony\Component\HttpFoundation\File\File as FileObj;
 use Exception;
 
@@ -189,7 +190,7 @@ class Resizer
      */
     protected function getOption($option)
     {
-        return array_get($this->options, $option);
+        return Arr::get($this->options, $option);
     }
 
     /**

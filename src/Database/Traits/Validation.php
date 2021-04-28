@@ -5,6 +5,8 @@ use Exception;
 use Input;
 use Lang;
 use Illuminate\Contracts\Validation\Rule;
+use Winter\Storm\Support\Arr;
+use Winter\Storm\Support\Str;
 use Winter\Storm\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
 use Winter\Storm\Database\ModelException;
@@ -67,7 +69,7 @@ trait Validation
                  * events should still fire for consistency. So validate an
                  * empty set of rules and messages.
                  */
-                $force = array_get($options, 'force', false);
+                $force = Arr::get($options, 'force', false);
                 if ($force) {
                     $valid = $model->validate([], []);
                 }
@@ -381,16 +383,16 @@ trait Validation
                 /*
                  * Remove primary key unique validation rule if the model already exists
                  */
-                if (($rulePart === 'unique' || starts_with($rulePart, 'unique:')) && $this->exists) {
+                if (($rulePart === 'unique' || Str::startsWith($rulePart, 'unique:')) && $this->exists) {
                     $ruleParts[$key] = $this->processValidationUniqueRule($rulePart, $field);
                 }
                 /*
                  * Look for required:create and required:update rules
                  */
-                elseif (starts_with($rulePart, 'required:create') && $this->exists) {
+                elseif (Str::startsWith($rulePart, 'required:create') && $this->exists) {
                     unset($ruleParts[$key]);
                 }
-                elseif (starts_with($rulePart, 'required:update') && !$this->exists) {
+                elseif (Str::startsWith($rulePart, 'required:update') && !$this->exists) {
                     unset($ruleParts[$key]);
                 }
             }

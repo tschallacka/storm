@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Halcyon\Traits;
 
 use Illuminate\Support\MessageBag;
+use Winter\Storm\Support\Str;
 use Winter\Storm\Support\Facades\Validator;
 use Winter\Storm\Support\Facades\Input;
 use Winter\Storm\Halcyon\Exception\ModelException;
@@ -63,7 +64,7 @@ trait Validation
                  * events should still fire for consistency. So validate an
                  * empty set of rules and messages.
                  */
-                $force = array_get($options, 'force', false);
+                $force = Arr::get($options, 'force', false);
                 if ($force) {
                     $valid = $model->validate([], []);
                 }
@@ -263,10 +264,10 @@ trait Validation
                 /*
                  * Look for required:create and required:update rules
                  */
-                if (starts_with($rulePart, 'required:create') && $this->exists) {
+                if (Str::startsWith($rulePart, 'required:create') && $this->exists) {
                     unset($ruleParts[$key]);
                 }
-                elseif (starts_with($rulePart, 'required:update') && !$this->exists) {
+                elseif (Str::startsWith($rulePart, 'required:update') && !$this->exists) {
                     unset($ruleParts[$key]);
                 }
             }

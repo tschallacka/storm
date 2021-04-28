@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Network;
 
 use Winter\Storm\Exception\ApplicationException;
+use Winter\Storm\Support\Arr;
 
 /**
  * HTTP Network Access
@@ -338,7 +339,7 @@ class Http
                 $this->redirectCount = $this->maxRedirects;
             }
             if (in_array($this->code, [301, 302])) {
-                $this->url = array_get($this->info, 'url');
+                $this->url = Arr::get($this->info, 'url');
                 if (!empty($this->url) && $this->redirectCount > 0) {
                     $this->redirectCount -= 1;
                     return $this->send();

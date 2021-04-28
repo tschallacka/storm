@@ -582,10 +582,10 @@ class Model extends EloquentModel
         // which doesn't support sending micro or milliseconds
         // @see https://github.com/rainlab/blog-plugin/issues/334
         if (str_contains($format, '.') && !str_contains($value, '.')) {
-            if (ends_with($format, '.u')) {
+            if (Str::endsWith($format, '.u')) {
                 $value .= '.000000';
             }
-            if (ends_with($format, '.v')) {
+            if (Str::endsWith($format, '.v')) {
                 $value .= '.000';
             }
         }

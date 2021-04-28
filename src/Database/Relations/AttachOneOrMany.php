@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Winter\Storm\Support\Arr;
 use Winter\Storm\Support\Facades\DbDongle;
 use Winter\Storm\Database\Attach\File as FileModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -211,7 +212,7 @@ trait AttachOneOrMany
         if ($sessionKey === null) {
             $options = $this->parent->getRelationDefinition($this->relationName);
 
-            if (array_get($options, 'delete', false)) {
+            if (Arr::get($options, 'delete', false)) {
                 $model->delete();
             }
             else {

@@ -3,6 +3,7 @@
 use Db;
 use Carbon\Carbon;
 use Winter\Storm\Database\Model;
+use Winter\Storm\Support\Arr;
 use Exception;
 
 /**
@@ -115,11 +116,11 @@ class DeferredBinding extends Model
 
             $options = $masterObject->getRelationDefinition($this->master_field);
 
-            if (!array_get($options, 'delete', false)) {
+            if (!Arr::get($options, 'delete', false)) {
                 return;
             }
 
-            $foreignKey = array_get($options, 'key', $masterObject->getForeignKey());
+            $foreignKey = Arr::get($options, 'key', $masterObject->getForeignKey());
 
             // Only delete it if the relationship is null.
             if (!$relatedObj->$foreignKey) {

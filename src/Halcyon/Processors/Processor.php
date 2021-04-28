@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Halcyon\Processors;
 
 use Winter\Storm\Halcyon\Builder;
+use Winter\Storm\Support\Arr;
 
 class Processor
 {
@@ -18,7 +19,7 @@ class Processor
             return null;
         }
 
-        $fileName = array_get($result, 'fileName');
+        $fileName = Arr::get($result, 'fileName');
 
         return [$fileName => $this->parseTemplateContent($query, $result, $fileName)];
     }
@@ -39,7 +40,7 @@ class Processor
         $items = [];
 
         foreach ($results as $result) {
-            $fileName = array_get($result, 'fileName');
+            $fileName = Arr::get($result, 'fileName');
             $items[$fileName] = $this->parseTemplateContent($query, $result, $fileName);
         }
 
@@ -58,14 +59,14 @@ class Processor
             'isCompoundObject' => $query->getModel()->isCompoundObject()
         ];
 
-        $content = array_get($result, 'content');
+        $content = Arr::get($result, 'content');
 
         $processed = SectionParser::parse($content, $options);
 
         return [
             'fileName' => $fileName,
             'content' => $content,
-            'mtime' => array_get($result, 'mtime'),
+            'mtime' => Arr::get($result, 'mtime'),
             'markup' => $processed['markup'],
             'code' => $processed['code']
         ] + $processed['settings'];

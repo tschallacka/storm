@@ -3,6 +3,7 @@
 use Exception;
 use Winter\Storm\Database\Collection;
 use Winter\Storm\Database\TreeCollection;
+use Winter\Storm\Support\Arr;
 
 /**
  * Simple Tree model trait
@@ -208,7 +209,7 @@ trait SimpleTree
                 /*
                  * Add the children
                  */
-                $childItems = array_get($map, $item->{$idName}, []);
+                $childItems = Arr::get($map, $item->{$idName}, []);
                 if (count($childItems) > 0) {
                     $result = $result + $buildCollection($childItems, $map, $depth + 1);
                 }

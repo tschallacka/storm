@@ -1,6 +1,7 @@
 <?php namespace Winter\Storm\Foundation\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Winter\Storm\Support\Str;
 
 class ExecutionContextProvider extends ServiceProvider
 {
@@ -17,7 +18,7 @@ class ExecutionContextProvider extends ServiceProvider
 
             $backendUri = $this->normalizeUrl($app['config']->get('cms.backendUri', 'backend'));
 
-            if (starts_with($requestPath, $backendUri)) {
+            if (Str::startsWith($requestPath, $backendUri)) {
                 return 'back-end';
             }
             else {

@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Filesystem;
 
+use Winter\Storm\Support\Str;
 use Throwable;
 
 /**
@@ -110,7 +111,7 @@ class PathResolver
         $directory = static::resolve($directory);
         $path = static::resolve($path);
 
-        return starts_with($path, $directory);
+        return Str::startsWith($path, $directory);
     }
 
     /**
@@ -221,7 +222,7 @@ class PathResolver
         $found = false;
 
         foreach ($baseDirs as $baseDir) {
-            if (starts_with(static::normalize($path), static::normalize($baseDir))) {
+            if (Str::startsWith(static::normalize($path), static::normalize($baseDir))) {
                 $found = true;
                 break;
             }

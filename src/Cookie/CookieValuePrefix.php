@@ -1,5 +1,7 @@
 <?php namespace Winter\Storm\Cookie;
 
+use Winter\Storm\Support\Str;
+
 /**
  * Helper class to prefix, unprefix, and verify cookie values
  */
@@ -39,7 +41,7 @@ class CookieValuePrefix
     public static function getVerifiedValue($name, $value, $key)
     {
         $verifiedValue = null;
-        if (starts_with($value, static::create($name, $key))) {
+        if (Str::startsWith($value, static::create($name, $key))) {
             $verifiedValue = static::remove($value);
         }
         return $verifiedValue;

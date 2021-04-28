@@ -1,5 +1,6 @@
 <?php namespace Winter\Storm\Database\Traits;
 
+use Winter\Storm\Support\Arr;
 use App;
 use Exception;
 
@@ -45,7 +46,7 @@ trait Encryptable
                 }
             });
             $model->bindEvent('model.beforeGetAttribute', function ($key) use ($model, $encryptable) {
-                if (in_array($key, $encryptable) && array_get($model->attributes, $key) != null) {
+                if (in_array($key, $encryptable) && Arr::get($model->attributes, $key) != null) {
                     return $model->getEncryptableValue($key);
                 }
             });
